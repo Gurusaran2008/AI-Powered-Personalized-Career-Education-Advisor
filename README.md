@@ -16,21 +16,6 @@ AI Career Advisor is a Flask web application that helps students explore career 
 - pdfplumber
 - python-docx
 
-## Installation
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   py -m pip install -r requirements.txt
-   ```
-3. Run the app:
-   ```bash
-   py app.py
-   ```
-4. Open your browser and visit:
-   ```text
-   http://127.0.0.1:5000/
-   ```
-
 ## Project Structure
 - app.py - Main Flask application
 - templates/ - HTML pages
