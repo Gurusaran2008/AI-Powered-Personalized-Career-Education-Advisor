@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Prep - AI Career Advisor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* (kept the same CSS as before - trimmed here for brevity) */
+        .interview-container { max-width: 1200px; margin: 120px auto 50px; padding: 0 20px; }
+        .interview-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 30px; border-radius: 15px; color: white; margin-bottom: 40px; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); }
+        .interview-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .interview-header p { font-size: 1.1rem; opacity: 0.9; }
+        .interview-main { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .career-selector, .question-type-selector { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .career-selector h3, .question-type-selector h3 { color: #667eea; margin-bottom: 20px; font-size: 1.2rem; }
+        .questions-section { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .questions-section h2 { color: #667eea; margin-bottom: 20px; font-size: 1.6rem; }
+        .question-item { background: #f8f9fa; padding: 18px; margin-bottom: 12px; border-radius: 10px; border-left: 4px solid #667eea; cursor: pointer; }
+        .question-number { display:inline-block; background:#667eea; color:white; padding:4px 8px; border-radius:20px; margin-right:8px; font-weight:600; }
+        .tips-section { background: linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+        .tips-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+        .tip-card { background:white; padding:18px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.08); }
+        .interview-framework { background:#fffaeb; padding:20px; border-radius:10px; border-left:4px solid #ffc107; margin-bottom:20px; }
+        .flag-item { padding:12px; background:#f8f9fa; border-radius:8px; }
+        footer { background:#0f172a; color:white; text-align:center; padding:30px; margin-top:40px; border-top:1px solid rgba(16,185,129,0.2); }
+        @media (max-width:768px) { .interview-main { grid-template-columns:1fr; } .tips-grid{grid-template-columns:1fr;} }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><span>AI</span>Career Advisor</div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/predict">Predict</a></li>
+        <li><a href="/resume">Resume</a></li>
+        <li><a href="/interview">Interview</a></li>
+        <li><a href="/courses">Courses</a></li>
+        {% if current_user %}
+            <li style="color: #10b981; font-weight: 600;">👤 {{ current_user }}</li>
+            <li><a href="/logout">Logout</a></li>
+        {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<div class="interview-container">
+    <div class="interview-header">
+        <h1>Interview Prep</h1>
+        <p>Practice role-specific and behavioral questions, and get tips to improve.</p>
+    </div>
+
+    <form method="POST" class="interview-main">
+        <div class="career-selector">
+            <h3>Select Your Target Role</h3>
+            <select name="career" onchange="this.form.submit()" required>
+                <option value="">-- Choose a Career --</option>
+                {% for role in career_list %}
+                    <option value="{{ role }}" {% if role == career %}selected{% endif %}>{{ role }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="question-type-selector">
+            <h3>Question Type</h3>
+            <div class="question-types">
+                <button type="submit" name="question_type" value="technical" class="question-type-btn {% if question_type == 'technical' %}active{% endif %}">💻 Technical</button>
+                <button type="submit" name="question_type" value="behavioral" class="question-type-btn {% if question_type == 'behavioral' %}active{% endif %}">🤝 Behavioral</button>
+            </div>
+        </div>
+    </form>
+
+    {% if career and selected_questions %}
+    <div class="questions-section">
+        <h2>{{ career }} - {{ question_type.capitalize() }} Questions</h2>
+        {% for question in selected_questions %}
+            <div class="question-item">
+                <h4><span class="question-number">Q{{ loop.index }}</span>{{ question }}</h4>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="tips-section">
+        <h2>Role-Specific Tips for {{ career }}</h2>
+        <div class="tips-grid">
+            {% for tip in tips %}
+                <div class="tip-card"><p>{{ tip }}</p></div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="expert-tips">
+        <h2>⭐ Expert Interview Framework</h2>
+        <div class="interview-framework">
+            <h3>📋 The STAR Method</h3>
+            <p><strong>{{ interview_tips.star_method.what }}</strong></p>
+            <div class="framework-step"><strong>Situation:</strong><p>Describe the context and challenge you faced.</p></div>
+            <div class="framework-step"><strong>Task:</strong><p>Explain your specific responsibility.</p></div>
+            <div class="framework-step"><strong>Action:</strong><p>Detail the specific steps you took.</p></div>
+            <div class="framework-step"><strong>Result:</strong><p>Share measurable outcomes and learnings.</p></div>
+        </div>
+
+        <div class="tips-grid" style="margin-top:20px;">
+            <div class="tip-card">
+                <h4>🔍 Before Interview</h4>
+                <ul>
+                    {% for tip in interview_tips.general.before_interview %}
+                        <li>{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tip-card">
+                <h4>🎤 During Interview</h4>
+                <ul>
+                    {% for tip in interview_tips.general.during_interview %}
+                        <li>{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tip-card">
+                <h4>✉️ After Interview</h4>
+                <ul>
+                    {% for tip in interview_tips.general.after_interview %}
+                        <li>{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="red-flags" style="margin-top:20px;">
+        <h3>🚩 Red Flags to Avoid</h3>
+        <div class="flags-grid">
+            {% for flag in interview_tips.red_flags %}
+                <div class="flag-item">{{ flag }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="green-flags" style="margin-top:20px;">
+        <h3>✅ Green Flags - Things to Do</h3>
+        <div class="flags-grid">
+            {% for flag in interview_tips.green_flags %}
+                <div class="flag-item">{{ flag }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="text-align:center; margin-top:30px;">
+        <a href="/predict" class="btn-primary">Get Career Recommendation</a>
+        <a href="/resume" class="btn-secondary">Polish Your Resume</a>
+        <a href="/courses" class="btn-secondary">Learn & Upskill</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2024 AI Career Advisor. Empowering careers with AI-driven guidance.</p>
+</footer>
+
+<script>
+    document.querySelectorAll('.question-item').forEach(item => {
+        item.addEventListener('click', function() { this.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+    });
+</script>
+</body>
+</html>

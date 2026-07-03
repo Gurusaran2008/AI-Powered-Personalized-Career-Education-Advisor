@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | AI Career Advisor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+    <div class="logo"><span>AI</span>Career Advisor</div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/predict">Predict</a></li>
+        <li><a href="/resume">Resume</a></li>
+        <li><a href="/interview">Interview</a></li>
+        <li><a href="/courses">Courses</a></li>
+        <li><a href="/login">Login</a></li>
+    </ul>
+</nav>
+<div class="page-shell auth-shell">
+    <div class="panel card-panel auth-panel">
+        <div class="panel-heading">
+            <p class="eyebrow">Create Account</p>
+            <h1>Register for secure access</h1>
+            <p class="lead">Create your profile to save reports and keep using our career tools.</p>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form action="/register" method="POST" class="form-grid auth-form">
+            <div class="field-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+            </div>
+            <div class="field-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="field-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+            <div class="field-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+            </div>
+            <button type="submit" class="btn-primary">Register</button>
+            <p class="auth-note">Already have an account? <a href="/login">Login here</a></p>
+        </form>
+    </div>
+</div>
+
+    </body>
+
+    </html>

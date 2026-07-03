@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Career Prediction</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+<nav>
+    <div class="logo"><span>AI</span>Career Advisor</div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/predict">Predict</a></li>
+        <li><a href="/resume">Resume</a></li>
+        <li><a href="/interview">Interview</a></li>
+        <li><a href="/courses">Courses</a></li>
+        {% if current_user %}
+            <li style="color: #10b981; font-weight: 600;">👤 {{ current_user }}</li>
+            <li><a href="/logout">Logout</a></li>
+        {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<div class="page-shell">
+    <div class="panel card-panel">
+        <div class="panel-heading">
+            <p class="eyebrow">Career Guidance</p>
+            {% if current_user %}
+            <h1>Welcome, {{ current_user }}! Let's Find Your Perfect Career</h1>
+            <p class="lead">Answer a few quick questions and get a confidence-backed career recommendation tailored for you.</p>
+            {% else %}
+            <h1>Predict Your Ideal Career Path</h1>
+            <p class="lead">Answer a few quick questions and get a confidence-backed career recommendation.</p>
+            {% endif %}
+        </div>
+
+        <form action="/result" method="POST" class="form-grid">
+            <div class="field-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" {% if current_user %}value="{{ current_user }}"{% endif %} required>
+            </div>
+
+            <div class="field-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" placeholder="Enter your age" required>
+            </div>
+
+            <div class="field-group" id="marks-group" style="display:none;">
+                <label for="marks">Percentage / Score</label>
+                <input type="number" id="marks" name="marks" placeholder="e.g. 85" min="0" max="100">
+            </div>
+
+            <div class="field-group">
+                <label for="education">Education Stage</label>
+                <select id="education" name="education" required>
+                    <option value="">Select your current stage</option>
+                    <option>School</option>
+                    <option>College</option>
+                    <option>Graduate</option>
+                </select>
+                <p id="education-note" class="field-note">If your age is under 18, choose School for best guidance.</p>
+            </div>
+
+            <div class="field-group" id="degree-group" style="display:none;">
+                <label for="degree">Degree</label>
+                <select id="degree" required>
+                    <option value="">Select your degree</option>
+                    <option>B.Tech</option>
+                    <option>B.E</option>
+                    <option>B.Sc</option>
+                    <option>BCA</option>
+                    <option>BA</option>
+                    <option>BBA</option>
+                    <option>M.Tech</option>
+                    <option>M.Sc</option>
+                    <option>MCA</option>
+                    <option>MBA</option>
+                    <option>MS</option>
+                    <option>Others</option>
+                </select>
+                <input type="text" id="degree-other" placeholder="Type your degree" style="display:none; margin-top:8px;" />
+                <input type="hidden" id="degree_input" name="degree" />
+                <p class="field-note">Only required for College or Graduate students.</p>
+            </div>
+
+            <div class="field-group" id="branch-group" style="display:none;">
+                <label for="branch">Branch / Major</label>
+                <select id="branch" required>
+                    <option value="">Select your branch</option>
+                    <option>Computer Science</option>
+                    <option>Information Technology</option>
+                    <option>Electronics</option>
+                    <option>ECE</option>
+                    <option>Mechanical</option>
+                    <option>Electrical</option>
+                    <option>Civil</option>
+                    <option>Business Administration</option>
+                    <option>Data Science</option>
+                    <option>Design</option>
+                    <option>Others</option>
+                </select>
+                <input type="text" id="branch-other" placeholder="Type your branch/major" style="display:none; margin-top:8px;" />
+                <input type="hidden" id="branch_input" name="branch" />
+                <p class="field-note">Select your current college/graduate major.</p>
+            </div>
+
+            <div class="field-group" id="cgpa-group" style="display:none;">
+                <label for="cgpa">CGPA / GPA</label>
+                <input type="number" id="cgpa" name="cgpa" placeholder="e.g. 8.5" min="0" max="10" step="0.01">
+                <p class="field-note">Enter your current CGPA (on a scale of 10).</p>
+            </div>
+
+            <div class="field-group">
+                <label for="interest">Primary Interest</label>
+                <select id="interest" name="interest" required>
+                    <option value="">Select your strongest interest</option>
+                    <option>Artificial Intelligence</option>
+                    <option>Web Development</option>
+                    <option>Cyber Security</option>
+                    <option>Data Science</option>
+                    <option>Networking</option>
+                    <option>Cloud Computing</option>
+                    <option>Mobile App Development</option>
+                    <option>UI/UX Design</option>
+                    <option>Data Engineering</option>
+                    <option>Product Management</option>
+                    <option>DevOps Engineering</option>
+                    <option>Blockchain Development</option>
+                    <option>Game Development</option>
+                    <option>IoT (Internet of Things)</option>
+                    <option>Embedded Systems</option>
+                    <option>Quality Assurance / Testing</option>
+                    <option>Systems Administration</option>
+                    <option>Business Analytics</option>
+                    <option>Machine Learning Engineering</option>
+                    <option>Site Reliability Engineering</option>
+                    <option>Database Administration</option>
+                    <option>IT Project Management</option>
+                    <option>Security Architecture</option>
+                    <option>Cloud Security</option>
+                    <option>Automation Engineering</option>
+                    <option>Technical Support</option>
+                    <option>Technical Writing</option>
+                    <option>AR/VR Development</option>
+                    <option>Robotics Engineering</option>
+                    <option>Data Architecture</option>
+                    <option>Digital Marketing Analytics</option>
+                    <option>SEO Optimization</option>
+                    <option>ERP Consulting</option>
+                    <option>Frontend Development</option>
+                    <option>Backend Development</option>
+                    <option>Solutions Architecture</option>
+                    <option>Technical Program Management</option>
+                    <option>Platform Engineering</option>
+                    <option>AI Researcher</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label for="knowledge">Knowledge Level</label>
+                <select id="knowledge" name="knowledge" required>
+                    <option value="">Select your current knowledge level</option>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label for="skill">Top Skill</label>
+                <select id="skill" name="skill" required>
+                    <option value="">Select your top skill</option>
+                    <option>Python</option>
+                    <option>Java</option>
+                    <option>C++</option>
+                    <option>C#</option>
+                    <option>TypeScript</option>
+                    <option>Kotlin</option>
+                    <option>Swift</option>
+                    <option>PHP</option>
+                    <option>Go</option>
+                    <option>Rust</option>
+                    <option>HTML CSS</option>
+                    <option>JavaScript</option>
+                    <option>React</option>
+                    <option>Vue.js</option>
+                    <option>Angular</option>
+                    <option>Node.js</option>
+                    <option>SQL</option>
+                    <option>MySQL</option>
+                    <option>PostgreSQL</option>
+                    <option>MongoDB</option>
+                    <option>Firebase</option>
+                    <option>AWS</option>
+                    <option>Azure</option>
+                    <option>GCP</option>
+                    <option>Docker</option>
+                    <option>Kubernetes</option>
+                    <option>Terraform</option>
+                    <option>Jenkins</option>
+                    <option>Linux</option>
+                    <option>Git</option>
+                    <option>Figma</option>
+                    <option>Tableau</option>
+                    <option>Power BI</option>
+                    <option>Hadoop</option>
+                    <option>Spark</option>
+                    <option>Salesforce</option>
+                    <option>Selenium</option>
+                    <option>Unity</option>
+                    <option>Solidity</option>
+                    <option>Matlab</option>
+                    <option>R</option>
+                    <option>SAS</option>
+                    <option>Adobe Photoshop</option>
+                    <option>Illustrator</option>
+                    <option>Cloud Security</option>
+                    <option>SEO</option>
+                    <option>Excel</option>
+                    <option>Agile</option>
+                    <option>Scrum</option>
+                    <option>Data Structures</option>
+                    <option>Algorithms</option>
+                    <option>System Design</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label for="core_skills">Core Skills</label>
+                <textarea id="core_skills" name="core_skills" placeholder="Enter your core skills separated by commas. Example: Data Structures, Algorithms, System Design, Problem Solving" rows="4"></textarea>
+                <p class="field-note">Type your core skills separated by commas (e.g., Python, Data Structures, System Design).</p>
+            </div>
+
+            <button type="submit" class="btn-primary">Generate Recommendation</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const ageInput = document.getElementById('age');
+    const educationSelect = document.getElementById('education');
+    const educationNote = document.getElementById('education-note');
+    const marksGroup = document.getElementById('marks-group');
+    const marksInput = document.getElementById('marks');
+    const degreeGroup = document.getElementById('degree-group');
+    const degreeSelect = document.getElementById('degree');
+    const degreeOther = document.getElementById('degree-other');
+    const degreeInputHidden = document.getElementById('degree_input');
+    const branchGroup = document.getElementById('branch-group');
+    const branchSelect = document.getElementById('branch');
+    const branchOther = document.getElementById('branch-other');
+    const branchInputHidden = document.getElementById('branch_input');
+    const cgpaGroup = document.getElementById('cgpa-group');
+    const cgpaInput = document.getElementById('cgpa');
+
+    function updateEducationOptions() {
+        const ageValue = ageInput.value.trim();
+        const age = ageValue === '' ? null : Number(ageValue);
+        const canBeCollege = age === null || age >= 18;
+        const shouldForceSchool = age !== null && age < 18;
+
+        Array.from(educationSelect.options).forEach(option => {
+            if (option.value === 'College' || option.value === 'Graduate') {
+                option.disabled = !canBeCollege;
+            }
+        });
+
+        if (shouldForceSchool && (educationSelect.value === 'College' || educationSelect.value === 'Graduate')) {
+            educationSelect.value = 'School';
+        }
+
+        if (educationSelect.value === 'School') {
+            // School students: show marks, hide CGPA and college fields
+            marksGroup.style.display = 'block';
+            marksInput.required = true;
+            degreeGroup.style.display = 'none';
+            branchGroup.style.display = 'none';
+            cgpaGroup.style.display = 'none';
+            degreeSelect.required = false;
+            branchSelect.required = false;
+            degreeInputHidden.required = false;
+            branchInputHidden.required = false;
+            degreeInputHidden.value = '';
+            branchInputHidden.value = '';
+            cgpaInput.required = false;
+            degreeSelect.value = '';
+            branchSelect.value = '';
+            cgpaInput.value = '';
+        } else if (educationSelect.value === 'College' || educationSelect.value === 'Graduate') {
+            // College/Graduate students: show degree, branch, CGPA; hide marks
+            marksGroup.style.display = 'none';
+            marksInput.required = false;
+            marksInput.value = '';
+            degreeGroup.style.display = 'block';
+            branchGroup.style.display = 'block';
+            cgpaGroup.style.display = 'block';
+            degreeSelect.required = true;
+            branchSelect.required = true;
+            degreeInputHidden.required = true;
+            branchInputHidden.required = true;
+            // Ensure hidden inputs reflect current select/other values
+            updateDegreeInput();
+            updateBranchInput();
+            cgpaInput.required = true;
+        } else {
+            // No education selected
+            marksGroup.style.display = 'none';
+            marksInput.required = false;
+            degreeGroup.style.display = 'none';
+            branchGroup.style.display = 'none';
+            cgpaGroup.style.display = 'none';
+            degreeSelect.required = false;
+            branchSelect.required = false;
+            degreeInputHidden.required = false;
+            branchInputHidden.required = false;
+            degreeInputHidden.value = '';
+            branchInputHidden.value = '';
+            cgpaInput.required = false;
+        }
+
+        if (age === null) {
+            educationNote.textContent = 'Enter your age to validate school vs college guidance.';
+        } else if (age > 0 && age < 18) {
+            educationNote.textContent = 'Age under 18 should typically select School. College and Graduate are disabled.';
+        } else {
+            educationNote.textContent = 'If your age is under 18, choose School for best guidance.';
+        }
+    }
+
+    educationSelect.addEventListener('change', updateEducationOptions);
+    ageInput.addEventListener('input', updateEducationOptions);
+    window.addEventListener('DOMContentLoaded', updateEducationOptions);
+    window.addEventListener('pageshow', updateEducationOptions);
+
+    // Sync degree/branch selects with hidden inputs and show "Other" textboxes
+    function updateDegreeInput() {
+        const val = degreeSelect.value;
+        if (val === 'Others') {
+            degreeOther.style.display = 'block';
+            degreeOther.required = true;
+            degreeInputHidden.value = degreeOther.value.trim();
+        } else {
+            degreeOther.style.display = 'none';
+            degreeOther.required = false;
+            degreeInputHidden.value = val || '';
+        }
+    }
+
+    function updateBranchInput() {
+        const val = branchSelect.value;
+        if (val === 'Others') {
+            branchOther.style.display = 'block';
+            branchOther.required = true;
+            branchInputHidden.value = branchOther.value.trim();
+        } else {
+            branchOther.style.display = 'none';
+            branchOther.required = false;
+            branchInputHidden.value = val || '';
+        }
+    }
+
+    degreeSelect.addEventListener('change', updateDegreeInput);
+    degreeOther.addEventListener('input', () => { if (degreeSelect.value === 'Others') degreeInputHidden.value = degreeOther.value.trim(); });
+    branchSelect.addEventListener('change', updateBranchInput);
+    branchOther.addEventListener('input', () => { if (branchSelect.value === 'Others') branchInputHidden.value = branchOther.value.trim(); });
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+        updateDegreeInput();
+        updateBranchInput();
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Career Recommendation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+<nav>
+    <div class="logo"><span>AI</span>Career Advisor</div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/predict">Predict</a></li>
+        <li><a href="/resume">Resume</a></li>
+        <li><a href="/interview">Interview</a></li>
+        <li><a href="/courses">Courses</a></li>
+        {% if current_user %}
+            <li style="color: #10b981; font-weight: 600;">👤 {{ current_user }}</li>
+            <li><a href="/logout">Logout</a></li>
+        {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+    </ul>
+</nav>
+
+<div class="page-shell">
+    <div class="panel card-panel result-panel">
+        <div class="panel-heading">
+            <p class="eyebrow">Career Recommendation</p>
+            <h1>Your Personalized Career Profile</h1>
+            <p class="lead">A professional recommendation based on your input and career interests.</p>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <p class="summary-label">Candidate</p>
+                <p class="summary-value">{{ name }}</p>
+            </div>
+            <div class="summary-card">
+                <p class="summary-label">Score</p>
+                <p class="summary-value">{{ marks }}%</p>
+            </div>
+            <div class="summary-card">
+                <p class="summary-label">Education</p>
+                <p class="summary-value">{{ education }}</p>
+            </div>
+            <div class="summary-card">
+                <p class="summary-label">Degree</p>
+                <p class="summary-value">{{ degree }}</p>
+            </div>
+            <div class="summary-card">
+                <p class="summary-label">Branch</p>
+                <p class="summary-value">{{ branch }}</p>
+            </div>
+            {% if cgpa %}
+            <div class="summary-card">
+                <p class="summary-label">CGPA</p>
+                <p class="summary-value">{{ cgpa }}</p>
+            </div>
+            {% endif %}
+            <div class="summary-card">
+                <p class="summary-label">Knowledge</p>
+                <p class="summary-value">{{ knowledge }}</p>
+            </div>
+            <div class="summary-card">
+                <p class="summary-label">Interest</p>
+                <p class="summary-value">{{ interest }}</p>
+            </div>
+            <div class="summary-card">
+                <p class="summary-label">Skill</p>
+                <p class="summary-value">{{ skill }}</p>
+            </div>
+        </div>
+
+        {% if core_skills %}
+        <div class="core-skills-display">
+            <h3>Your Core Skills</h3>
+            <div class="skill-badges">
+                {% for core_skill in core_skills %}
+                    <span class="skill-badge">{{ core_skill }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="recommendation-block">
+            <div class="recommendation-badge">
+                <span>Recommended Career</span>
+                <strong>{{ career }}</strong>
+            </div>
+
+            <!-- Career Recommendation Reasoning -->
+            <div class="reasoning-section">
+                <h3>Why {{ career }}?</h3>
+                <div class="reasoning-list">
+                    {% for reason in career_reasoning %}
+                    <div class="reasoning-item">{{ reason }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if education_notice %}
+                <div class="validation-note">{{ education_notice }}</div>
+            {% endif %}
+
+            <div class="recommendation-details">
+                <p class="confidence">Confidence score: <strong>{{ confidence }}%</strong></p>
+                <p>{{ career_note }}</p>
+                <p class="career-detail">{{ career_detail }}</p>
+                <ul>
+                    <li>{{ recommended_action }}</li>
+                    <li>Focus on certifications and industry-relevant training.</li>
+                    <li>Expand your portfolio with real-world applications.</li>
+                    <li>Network with professionals in your chosen field.</li>
+                </ul>
+            </div>
+
+            <div class="course-recommendations">
+                <h2>📚 Recommended Courses</h2>
+                <p class="course-intro">Build your skills with these carefully selected courses tailored to your career path:</p>
+                <div class="course-list">
+                    {% for course in recommended_courses %}
+                        <div class="course-card">
+                            <div class="course-title">📖 {{ course }}</div>
+                            {% if course_reasoning_dict and course in course_reasoning_dict %}
+                            <p class="course-reason">{{ course_reasoning_dict[course] }}</p>
+                            {% else %}
+                            <p class="course-reason">Essential skill development for {{ career }} professionals</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Career Market Insights Section -->
+        <div class="career-insights-section">
+            <h2>📊 Career Market Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card salary-card">
+                    <div class="insight-icon">💰</div>
+                    <div class="insight-content">
+                        <h4>Salary Range</h4>
+                        <p class="insight-value">${{ "{:,}".format(career_insight.salary_min) }} - ${{ "{:,}".format(career_insight.salary_max) }}</p>
+                        <p class="insight-currency">{{ career_insight.currency }}</p>
+                    </div>
+                </div>
+
+                <div class="insight-card growth-card">
+                    <div class="insight-icon">📈</div>
+                    <div class="insight-content">
+                        <h4>Job Growth Rate</h4>
+                        <p class="insight-value">{{ career_insight.growth_rate }}%</p>
+                        <p class="insight-subtext">10-year projection</p>
+                    </div>
+                </div>
+
+                <div class="insight-card demand-card">
+                    <div class="insight-icon">🔥</div>
+                    <div class="insight-content">
+                        <h4>Market Demand</h4>
+                        <p class="insight-value demand-{{ career_insight.demand_color }}">{{ career_insight.demand }}</p>
+                        <p class="insight-subtext">Current market status</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insights-description">
+                <p>{{ career_insight.description }}</p>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <a href="/roadmap/{{ career }}" class="btn-secondary">View Learning Roadmap</a>
+            <a href="/predict" class="btn-secondary">Refine Input</a>
+            <a href="/" class="btn-primary">Return Home</a>
+        </div>
+    </div>
+</div>
+
+    </body>
+
+    </html>
+```

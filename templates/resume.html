@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav>
+    <div class="logo"><span>AI</span>Career Advisor</div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/predict">Predict</a></li>
+        <li><a href="/resume">Resume</a></li>
+        <li><a href="/interview">Interview</a></li>
+        <li><a href="/courses">Courses</a></li>
+        {% if current_user %}
+            <li style="color: #10b981; font-weight: 600;">👤 {{ current_user }}</li>
+            <li><a href="/logout">Logout</a></li>
+        {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<div class="page-shell">
+    <div class="top-bar">
+        <div style="text-align:left;">
+            <h3 style="margin:0; color:#fff;">Resume Analyzer</h3>
+            <p class="lead" style="margin:6px 0 0; color: rgba(255,255,255,0.92);">Upload your resume and paste the job description for an instant, professional AI review.</p>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-column">
+            <div class="upload-section card-box">
+                <h5>📤 Upload Resume</h5>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for category, message in messages %}
+                                <div class="flash-message {{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <form action="/resume" method="POST" enctype="multipart/form-data" class="form-grid">
+                    <div class="field-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" value="{% if current_user %}{{ current_user }}{% elif name %}{{ name }}{% endif %}" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" value="{{ email }}" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" name="phone" placeholder="Enter your phone" value="{{ phone }}">
+                    </div>
+                    <div class="field-group">
+                        <label for="resume">Upload Resume</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                        <p class="field-note">Upload a PDF or Word document for instant AI review.</p>
+                    </div>
+                    <div class="field-group">
+                        <label for="job_desc">Job Description</label>
+                        <textarea id="job_desc" name="job_desc" rows="5" placeholder="Paste Job Description..." required>{{ job_desc }}</textarea>
+                    </div>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <button type="submit" class="btn-primary">🔍 Analyze Resume</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="dashboard-column">
+            {% if score is not none %}
+                <div class="card card-box p-4 mb-3 text-center">
+                    <h5 style="margin-bottom:8px;">📊 ATS Score</h5>
+                    <div class="score">{{ score }}%</div>
+                    {% if match_message %}
+                    <p class="match-message match-{{ match_status }}" style="margin-top:8px;">{{ match_message }}</p>
+                    {% endif %}
+                    <div class="progress mt-3" aria-hidden="true">
+                        <div class="progress-bar" style="width: {{ score }}%">{{ score }}%</div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <a href="/download" class="btn-success" style="flex: 1; text-align:center;">📄 Download Report</a>
+                    </div>
+                </div>
+
+            <div class="card card-box p-4 mb-3">
+                <h5>📊 Skill Match Chart</h5>
+                <canvas id="atsChart"></canvas>
+            </div>
+
+            <div class="row gap-3 mb-3">
+                <div class="card card-box p-3 flex-1">
+                    <h6>✅ Matched Skills</h6>
+                    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                        {% for m in matched %}
+                            <span class="skill-badge matched">{{ m }}</span>
+                        {% endfor %}
+                        {% if matched|length == 0 %}
+                            <p style="color:#6b7280; margin:0;">No matching skills found yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card card-box p-3 flex-1">
+                    <h6>❌ Missing Skills</h6>
+                    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                        {% for m in missing %}
+                            <span class="skill-badge missing">{{ m }}</span>
+                        {% endfor %}
+                        {% if missing|length == 0 %}
+                            <p style="color:#6b7280; margin:0;">No missing skills identified.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-box p-3 mb-3">
+                <h5>🤖 AI Suggestions</h5>
+                <ul>
+                    {% for s in suggestions %}
+                        <li>{{ s }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if explanation %}
+            <div class="card card-box p-3 mb-3">
+                <h5>🧠 Why Your Score is This</h5>
+                <ul>
+                    {% for e in explanation %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if name or email or phone %}
+            <div class="card card-box p-3 mb-3">
+                <h5>📄 Resume Details</h5>
+                <hr>
+                <p><strong>👤 Name:</strong> {{ name or 'Not provided' }}</p>
+                <p><strong>📧 Email:</strong> {{ email or 'Not provided' }}</p>
+                <p><strong>📱 Phone:</strong> {{ phone or 'Not provided' }}</p>
+                {% if education %}
+                    <p><strong>🎓 Education:</strong> {{ education }}</p>
+                {% endif %}
+                {% if skills_section %}
+                    <p><strong>💻 Skills:</strong> {{ skills_section }}</p>
+                {% endif %}
+                {% if projects %}
+                    <p><strong>📂 Projects:</strong> {{ projects }}</p>
+                {% endif %}
+                {% if certifications %}
+                    <p><strong>📜 Certifications:</strong> {{ certifications }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if resume_text %}
+            <div class="card card-box p-3 mb-3">
+                <h5>📜 Extracted Resume Text</h5>
+                <div class="resume-text">{{ resume_text }}</div>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="card card-box p-4 text-center">
+                <h5>📂 No Resume Uploaded</h5>
+                <p>Upload a resume and job description to generate AI-driven insights.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if score is not none %}
+<script>
+    const ctx = document.getElementById('atsChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Matched Skills', 'Missing Skills'],
+                datasets: [{
+                    data: [{{ matched|length }}, {{ missing|length }}],
+                    backgroundColor: ['#28a745', '#dc3545'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    }
+</script>
+{% endif %}
+</body>
+</html>

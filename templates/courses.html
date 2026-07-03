@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommended Courses</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav>
+    <div class="logo"><span>AI</span>Career Advisor</div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/predict">Predict</a></li>
+        <li><a href="/resume">Resume</a></li>
+        <li><a href="/interview">Interview</a></li>
+        <li><a href="/courses">Courses</a></li>
+        {% if current_user %}
+            <li style="color: #10b981; font-weight: 600;">👤 {{ current_user }}</li>
+            <li><a href="/logout">Logout</a></li>
+        {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        {% endif %}
+</html>
+    </ul>
+</nav>
+
+            <p class="lead">These courses are selected to support your career recommendation and skill growth.</p>
+        </div>
+        <div class="course-list">
+            <div class="course-item">🐍 Python Programming</div>
+            <div class="course-item">🤖 Machine Learning</div>
+            <div class="course-item">📊 Data Structures & Algorithms</div>
+            <div class="course-item">🗄 SQL & Database Management</div>
+            <div class="course-item">☁ Cloud Computing Basics</div>
+            <div class="course-item">🎨 UI/UX Design Fundamentals</div>
+        </div>
+        <div class="roadmap-actions">
+            <a href="/predict" class="btn-secondary">Back to Predict</a>
+            <a href="/" class="btn-primary">Home</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+```
