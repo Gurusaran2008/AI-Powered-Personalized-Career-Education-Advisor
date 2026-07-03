@@ -13,7 +13,7 @@ except ImportError:
     docx = None
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'
+app.secret_key = os.environ.get('SECRET_KEY', 'supersecretkey')
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'uploads')
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'doc', 'docx'}
 MATCH_THRESHOLD = 0.7
@@ -2587,5 +2587,5 @@ def roadmap(career):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
 
