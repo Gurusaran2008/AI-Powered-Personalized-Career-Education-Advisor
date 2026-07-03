@@ -23,6 +23,12 @@ AI Career Advisor is a Flask web application that helps students explore career 
 - uploads/ - Uploaded resume files
 - users.db - SQLite database
 
+## Modules
+- Authentication Module - Handles user registration, login, and session management
+- Career Prediction Module - Provides career suggestions and roadmap guidance
+- Resume Analysis Module - Processes uploaded resumes and extracts relevant information
+- Course and Interview Module - Displays learning resources and interview preparation content
+
 ## Notes
 - The app uses SQLite for storing user accounts.
 - Uploaded files are stored in the uploads folder.
