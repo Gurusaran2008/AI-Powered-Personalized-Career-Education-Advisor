@@ -2555,6 +2555,261 @@ INTERVIEW_TIPS = {
     ]
 }
 
+# Question-specific interview tips
+QUESTION_TIPS = {
+    "Explain the difference between supervised and unsupervised learning with real-world examples.": [
+        "💡 Provide concrete examples like email spam detection (supervised) vs customer segmentation (unsupervised)",
+        "🎯 Explain that supervised learning needs labeled data while unsupervised discovers patterns without labels",
+        "📊 Mention use cases: supervised for prediction, unsupervised for exploration and clustering",
+        "⭐ Highlight the business value of each approach"
+    ],
+    "What is the curse of dimensionality? How do you handle it?": [
+        "📈 Explain that more features can actually hurt model performance with limited data",
+        "🔍 Mention specific techniques: feature selection, PCA, regularization",
+        "💻 Give examples: 1000 features but only 100 samples leads to overfitting",
+        "✅ Show you understand the trade-off between model complexity and data availability"
+    ],
+    "Describe the process of training a neural network. What are backpropagation and gradient descent?": [
+        "🧠 Walk through forward pass → calculate loss → backpropagation → weight updates",
+        "📊 Explain backpropagation computes gradients by chain rule through layers",
+        "⚡ Gradient descent is the optimization algorithm that updates weights in opposite direction of gradient",
+        "🎯 Mention learning rate importance and different optimizers (SGD, Adam, RMSprop)"
+    ],
+    "How would you approach building an end-to-end machine learning pipeline?": [
+        "📋 Structure: Problem definition → Data collection → EDA → Preprocessing → Feature engineering → Model selection → Training → Evaluation → Deployment",
+        "🔄 Emphasize iteration and continuous improvement",
+        "🧪 Mention cross-validation and monitoring for model drift in production",
+        "📊 Show experience with production considerations like latency and scalability"
+    ],
+    "Explain cross-validation and why it's important in model evaluation.": [
+        "🎯 Cross-validation splits data into k-folds to get robust performance estimates",
+        "📊 Prevents overfitting to one specific train-test split",
+        "⚠️ Mention stratified k-fold for imbalanced datasets",
+        "✅ Show you understand it's the standard for model evaluation before final testing"
+    ],
+    "What is overfitting? How do you detect and prevent it?": [
+        "📈 High training accuracy but low test accuracy indicates overfitting",
+        "🔍 Detection: plot training vs validation loss curves",
+        "🛡️ Prevention techniques: regularization (L1/L2), early stopping, dropout, cross-validation",
+        "💡 Mention collecting more data is often the best solution"
+    ],
+    "Tell me about activation functions and why we use them.": [
+        "⚡ Activation functions add non-linearity, enabling networks to learn complex patterns",
+        "📊 Common ones: ReLU (hidden layers), Sigmoid (binary classification), Softmax (multi-class)",
+        "🎯 ReLU most popular - fast and addresses vanishing gradient problem",
+        "✅ Explain without activations, deep networks can't learn beyond linear transformations"
+    ],
+    "How would you optimize a slow machine learning model in production?": [
+        "🔍 Identify bottleneck: data loading, preprocessing, inference, or model size",
+        "⚡ Techniques: quantization, pruning, distillation, batching, caching predictions",
+        "☁️ Consider CPU vs GPU, distributed inference, or model serving platforms",
+        "📊 Mention monitoring latency and throughput metrics"
+    ],
+    "Describe a challenging ML project you worked on and how you solved it.": [
+        "⭐ Use STAR method: Situation, Task, Action, Result with metrics",
+        "🎯 Focus on challenges you overcame and learning outcomes",
+        "📊 Include metrics: accuracy improvement, latency reduction, cost savings",
+        "🔄 Mention how you'd approach it differently with hindsight"
+    ],
+    "How do you stay updated with the latest AI/ML advancements?": [
+        "📚 Mention specific sources: ArXiv, Papers With Code, Medium, conferences",
+        "🎯 Follow researchers and key figures in your area",
+        "🧪 Implement papers or reproduce results as learning",
+        "💡 Join communities: Kaggle, Hugging Face, local ML meetups"
+    ],
+    "Tell me about a time you had to explain complex ML concepts to non-technical stakeholders.": [
+        "🎤 Use analogies and avoid jargon",
+        "📊 Focus on business impact rather than technical details",
+        "💼 Use visualizations and real-world examples",
+        "✅ Show ability to translate between technical and business language"
+    ],
+    "How do you approach debugging a model that's underperforming?": [
+        "🔍 Systematic approach: check data quality, verify labels, examine features, try simpler models",
+        "📊 Analyze error patterns and failure modes",
+        "🧪 Use techniques: confusion matrix, SHAP values for feature importance",
+        "📈 Compare baseline models and ablation studies"
+    ],
+    "Describe your experience with deployment and monitoring of ML models.": [
+        "🚀 Mention specific tools: Docker, Kubernetes, FastAPI, or MLflow",
+        "📊 Monitor: prediction latency, model accuracy, data drift",
+        "🔄 Explain A/B testing and gradual rollout strategies",
+        "⚠️ Discuss rollback procedures and incident response"
+    ],
+    "What's your approach to handling imbalanced datasets?": [
+        "⚖️ Mention techniques: SMOTE, class weights, stratified sampling",
+        "📊 Use appropriate metrics: F1, precision-recall AUC instead of accuracy",
+        "🎯 Explain cost-sensitive learning",
+        "✅ Show understanding of domain-specific considerations"
+    ],
+    "Explain the difference between SQL and NoSQL databases. When would you use each?": [
+        "📊 SQL: structured data, ACID compliance, complex queries (relational)",
+        "📈 NoSQL: unstructured/semi-structured, horizontal scaling, flexibility",
+        "🎯 Use cases: SQL for financial systems, NoSQL for logs/analytics",
+        "✅ Mention specific databases: PostgreSQL vs MongoDB"
+    ],
+    "How does the DOM work? Explain event delegation and bubbling.": [
+        "🌳 DOM is tree structure of HTML elements in memory",
+        "📍 Event bubbling: event triggers on target element then propagates up",
+        "🎯 Event delegation: attach listener to parent instead of individual children",
+        "⚡ Benefits: better performance, handles dynamic elements"
+    ],
+    "What is REST API? Design a simple REST API for a social media application.": [
+        "🌐 REST uses HTTP methods: GET (read), POST (create), PUT (update), DELETE (remove)",
+        "🎯 Design resources: /users, /posts, /comments with proper endpoints",
+        "🔐 Discuss authentication, rate limiting, versioning",
+        "📊 Show understanding of status codes and error handling"
+    ],
+    "Explain CORS and how to handle CORS errors.": [
+        "🔒 CORS allows requests from different origins with explicit permission",
+        "⚠️ Errors happen when server doesn't allow cross-origin requests",
+        "✅ Solution: add CORS headers like Access-Control-Allow-Origin",
+        "💡 Mention server-side configuration vs credentials mode"
+    ],
+    "What are async/await and Promises? How do they help with asynchronous code?": [
+        "⏳ Promises represent eventual completion of async operation",
+        "🔄 async/await is syntactic sugar making async code look synchronous",
+        "🎯 Benefits: cleaner error handling with try/catch, easier to read and maintain",
+        "📊 Compare to callbacks and explain callback hell"
+    ],
+    "How would you optimize a slow database query?": [
+        "🔍 Steps: EXPLAIN query plan, check indexes, avoid N+1 problems",
+        "⚡ Add indexes on frequently queried columns",
+        "📊 Use query optimization: select specific columns, limit rows, caching",
+        "🎯 Monitor with EXPLAIN ANALYZE to see actual execution"
+    ],
+    "Explain session management and JWT authentication.": [
+        "🔐 Sessions store state on server, require server resources",
+        "🎫 JWT tokens are stateless, contain encoded data, no server lookup",
+        "📊 JWT better for microservices and scalability",
+        "✅ Discuss token expiration, refresh tokens, and security"
+    ],
+    "What's the difference between GET and POST requests?": [
+        "📍 GET retrieves data, visible in URL, less secure, cacheable",
+        "📝 POST sends data, in body (hidden), more secure, not cached",
+        "🎯 GET for queries, POST for form submissions and data creation",
+        "⚠️ Never put sensitive data in GET parameters"
+    ],
+    "Describe a full stack project where you handled both frontend and backend.": [
+        "⭐ Use STAR: specific project, your role, technical decisions made",
+        "🎯 Mention technologies for each layer: frontend, backend, database",
+        "📊 Include metrics: performance improvements, users served, etc.",
+        "🔄 Discuss challenges and how you solved them"
+    ],
+    "How do you approach debugging issues in a full stack application?": [
+        "🔍 Systematic: isolate issue to frontend/backend/database",
+        "🧪 Use browser DevTools, logs, monitoring tools",
+        "📊 Check API calls, database queries, network timing",
+        "✅ Mention rubber duck debugging and pair programming"
+    ],
+    "Tell me about a time you optimized application performance.": [
+        "⚡ Start with measurement: identify actual bottlenecks",
+        "📊 Frontend: code splitting, lazy loading, caching, CDN",
+        "🗄️ Backend: query optimization, caching, asynchronous processing",
+        "📈 Show before/after metrics"
+    ],
+    "How do you handle version control in team projects?": [
+        "🔄 Use Git workflow: feature branches, pull requests, code reviews",
+        "📝 Commit messages: clear, descriptive, followable history",
+        "🎯 Mention conflict resolution and merging strategies",
+        "✅ Show understanding of CI/CD integration"
+    ],
+    "Describe your experience with deploying applications.": [
+        "🚀 Deployment platforms: Heroku, AWS, Azure, DigitalOcean",
+        "🔄 Mention CI/CD pipeline: automated testing, staging, production",
+        "📊 Discuss environment configuration and secrets management",
+        "⚠️ Include monitoring and rollback procedures"
+    ],
+    "How do you approach learning new frameworks and technologies?": [
+        "📚 Official documentation and tutorials first",
+        "🧪 Build small projects to understand core concepts",
+        "👥 Join communities and follow thought leaders",
+        "🔄 Contribute to open source to deepen knowledge"
+    ],
+    "Walk me through your process for building a predictive model from scratch.": [
+        "📋 Problem definition → Data collection → EDA → Preprocessing → Feature engineering",
+        "🧪 Model selection → Training → Validation → Hyperparameter tuning → Evaluation",
+        "📊 Include business metrics alongside technical metrics",
+        "🔄 Explain iteration and refinement based on results"
+    ],
+    "How do you handle missing data? What techniques would you use?": [
+        "🔍 First understand why data is missing: MCAR, MAR, MNAR",
+        "⚠️ Options: drop rows/columns, imputation (mean, median, KNN), or domain knowledge",
+        "📊 Mention tools: pandas fillna(), scikit-learn imputation",
+        "✅ Show you understand impact on model and when each technique is appropriate"
+    ],
+    "Explain different evaluation metrics (precision, recall, F1, AUC) and when to use each.": [
+        "📊 Accuracy: overall correctness, use for balanced data",
+        "🎯 Precision: false positive rate, use when false positives costly (spam detection)",
+        "🔍 Recall: false negative rate, use when false negatives costly (disease diagnosis)",
+        "⚖️ F1: harmonic mean, AUC: ROC curve, use for imbalanced data"
+    ],
+    "What is the bias-variance tradeoff?": [
+        "📈 Bias: error from oversimplified model assumptions",
+        "📉 Variance: error from model sensitivity to training data variations",
+        "⚖️ Sweet spot: balance between underfitting and overfitting",
+        "🎯 High bias = underfit, high variance = overfit"
+    ],
+    "How do you feature engineer for a machine learning model?": [
+        "🧠 Create new features from existing data to improve model performance",
+        "📊 Techniques: binning, encoding, interactions, domain knowledge",
+        "🎯 Domain expertise crucial - understand what features matter",
+        "✅ Validate features with correlation, importance analysis"
+    ],
+    "Describe hyperparameter tuning methods.": [
+        "🎯 Hyperparameters: learning rate, regularization, tree depth, etc.",
+        "🔍 Methods: grid search (exhaustive), random search (sampling), Bayesian optimization",
+        "📊 Use cross-validation to validate hyperparameters",
+        "⚡ Mention AutoML tools: Optuna, Ray Tune"
+    ],
+    "Explain different types of regression and classification algorithms.": [
+        "📊 Regression (continuous): Linear, Ridge, Lasso, SVR, Random Forest",
+        "🎯 Classification (categorical): Logistic Regression, SVM, Random Forest, Gradient Boosting",
+        "⚖️ Understand pros/cons: interpretability, speed, accuracy tradeoffs",
+        "✅ Show when to use each based on problem"
+    ],
+    "How would you approach an A/B testing scenario?": [
+        "🧪 Null hypothesis: no difference between variants",
+        "📊 Calculate sample size for statistical significance",
+        "⏱️ Run test for sufficient time to capture variance",
+        "✅ Analyze results: p-value, confidence interval, practical significance"
+    ],
+    "Describe a data science project where you provided business value.": [
+        "💼 Start with business problem, not technical problem",
+        "📊 Include ROI: cost savings, revenue increase, time saved",
+        "🎯 Explain business impact in terms stakeholders understand",
+        "⭐ Use STAR method with specific metrics"
+    ],
+    "How do you communicate findings to non-technical stakeholders?": [
+        "🎤 Avoid jargon, use business terminology",
+        "📊 Focus on insights not algorithms",
+        "🎨 Use visualizations: charts, dashboards, simple graphs",
+        "💡 Answer 'so what?' - why should they care about findings"
+    ],
+    "Tell me about a time you had to work with messy, incomplete data.": [
+        "🔍 Describe data quality issues and your approach",
+        "📊 Data cleaning techniques used",
+        "🎯 How you validated cleaned data quality",
+        "✅ Show pragmatism balancing perfect vs good enough"
+    ],
+    "How do you validate if your model is actually solving the business problem?": [
+        "💼 Connect back to original business objective",
+        "📊 Use business metrics alongside model metrics",
+        "🧪 A/B test model in production if possible",
+        "🔄 Monitor for model drift and performance degradation"
+    ],
+    "Describe your experience with big data tools and technologies.": [
+        "🛠️ Mention tools: Spark, Hadoop, Hive, Kafka, etc.",
+        "📊 Understand distributed computing concepts",
+        "⚡ Experience with cloud platforms for big data",
+        "🎯 Know when to use big data vs traditional approaches"
+    ],
+    "How do you stay current with data science trends?": [
+        "📚 Follow blogs: Towards Data Science, Medium",
+        "🎓 Online courses: Coursera, Fast.ai, Kaggle",
+        "👥 Join communities: Kaggle, Reddit, Meetups",
+        "📰 Read papers and stay updated on research"
+    ]
+}
 
 @app.route('/interview', methods=['GET', 'POST'])
 def interview():
@@ -2566,6 +2821,15 @@ def interview():
     
     selected_questions = questions.get(question_type, [])
     
+    # Create a mapping of questions to their specific tips
+    questions_with_tips = []
+    for question in selected_questions:
+        question_obj = {
+            'text': question,
+            'tips': QUESTION_TIPS.get(question, ["💡 Practice answering this question with specific examples"])
+        }
+        questions_with_tips.append(question_obj)
+    
     career_list = sorted(INTERVIEW_QUESTIONS.keys())
     
     return render_template(
@@ -2574,6 +2838,7 @@ def interview():
         career_list=career_list,
         question_type=question_type,
         selected_questions=selected_questions,
+        questions_with_tips=questions_with_tips,
         tips=tips,
         interview_tips=INTERVIEW_TIPS,
         all_tips=INTERVIEW_TIPS
